@@ -4,18 +4,18 @@ import java.util.Arrays;
 
 public class hw1 {
     public static void main(String[] args) {
-//        GenericTestArr<String> gtaStr = new GenericTestArr<String>("a", "b", "c");
-//        System.out.println(Arrays.toString(gtaStr.getObj()));
-//        gtaStr.ChangeItemArr(0, 2);
-//        System.out.println(Arrays.toString(gtaStr.getObj()));
-//
-//        GenericTestArr<Integer> gtaInt = new GenericTestArr<Integer>(1, 2, 3);
-//        System.out.println(Arrays.toString(gtaInt.getObj()));
-//        gtaInt.ChangeItemArr(0, 2);
-//        System.out.println(Arrays.toString(gtaInt.getObj()));
-//
-//        System.out.println(gtaInt.ArrToAL());
-//        System.out.println(gtaStr.ArrToAL());
+        GenericTestArr<String> gtaStr = new GenericTestArr<String>("a", "b", "c");
+        System.out.println("Исходный массив: " + Arrays.toString(gtaStr.getObj()));
+        gtaStr.ChangeItemArr(0, 2);
+        System.out.println("Массив после замены" + Arrays.toString(gtaStr.getObj()));
+
+        GenericTestArr<Integer> gtaInt = new GenericTestArr<Integer>(1, 2, 3);
+        System.out.println("Исходный массив: " + Arrays.toString(gtaInt.getObj()));
+        gtaInt.ChangeItemArr(0, 2);
+        System.out.println("Массив после замены" + Arrays.toString(gtaInt.getObj()));
+
+        System.out.println("Массив преобразованный в ArrayList" + gtaInt.ArrToAL());
+        System.out.println("Массив преобразованный в ArrayList" + gtaStr.ArrToAL());
 
         Apple a1 = new Apple();
         Apple a2 = new Apple();
