@@ -197,7 +197,7 @@ public class Controller implements Initializable {
         String receiver = clientList.getSelectionModel().getSelectedItem();
         textField.setText("/w " + receiver + " ");
     }
-/*Регистрация нового пользователя*/
+    /**Регистрация нового пользователя*/
     private Stage createRegWindow() {
         Stage stage = null;
 
@@ -243,7 +243,7 @@ public class Controller implements Initializable {
     }
     /*Конец Регистрация нового пользователя*/
 
-    /*Смена ника пользователя*/
+    /**Смена ника пользователя*/
     public void tryToUpd() {
         if (updStage == null) {
             updStage = createUpdWindow();
@@ -275,7 +275,7 @@ public class Controller implements Initializable {
 
     public void tryUpdate(String login, String password, String nickname) {
         String msg = String.format("/upd %s %s %s", login, password, nickname);
-
+        System.out.println(msg);
         if (socket == null || socket.isClosed()) {
             connect();
         }

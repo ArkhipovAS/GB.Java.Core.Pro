@@ -59,7 +59,7 @@ public class SimpleAuthService implements AuthService {
     @Override
     public boolean update(String login, String password, String nickname) {
         DBAuthService dbas = new DBAuthService();
-        dbas.requestUpdateDB(login, password, nickname);
+        dbas.requestUpdateDB(login, nickname);
         return true;
     }
 }

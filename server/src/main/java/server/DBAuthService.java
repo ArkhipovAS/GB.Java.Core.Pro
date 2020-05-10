@@ -5,6 +5,9 @@ import java.sql.*;
 public class DBAuthService {
     private static Connection connection;
     private static Statement stmt;
+
+    private static PreparedStatement psGetNickname;
+    private static PreparedStatement psUpdNickname;
 //    private static String login;
 //    private static String pass;
 //    private static String nickname;
@@ -21,7 +24,7 @@ public class DBAuthService {
         connection = DriverManager.getConnection("jdbc:sqlite:main.db");
         stmt = connection.createStatement();
     }
-/*Добавление нового пользователя*/
+/**Добавление нового пользователя*/
     public void requestInsertDB(String loginDB, String passDB, String nicknameDB) {
         try {
             connectDB();
@@ -39,7 +42,7 @@ public class DBAuthService {
     }
 
     public void insertUserToDB(String loginIns, String passIns, String nicknameIns) {
-            String str = "INSERT INTO users (login, password, nickname) " +
+        String str = "INSERT INTO users (login, password, nickname) " +
                         "VALUES('" + loginIns + "', '" + passIns + "', '" + nicknameIns + "')";
         System.out.println(str);
         try {
@@ -52,12 +55,12 @@ public class DBAuthService {
     }
     /*Конец добавления нового пользователя*/
 
-    /*Смена ника*/
-    public void requestUpdateDB(String loginDB, String passDB, String nickDB) {
+    /**Смена ника*/
+    public void requestUpdateDB(String loginDB, String nickDB) {
         try {
             connectDB();
             System.out.println("DB connect");
-            updateUserToDB(loginDB, passDB, nickDB);
+            updateUserToDB(loginDB, nickDB);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -70,11 +73,16 @@ public class DBAuthService {
 
     }
 
-    private void updateUserToDB(String loginUpd, String passUpd, String nicknameUpd) {
-        String str = "UPDATE users SET nickname = '" + nicknameUpd + "' WHERE login = '" + loginUpd + "'";
-        System.out.println(str);
+    private void updateUserToDB(String loginUpd, String nicknameUpd) {
+//        String str = "UPDATE users SET nickname = '" + nicknameUpd + "' WHERE login = '" + loginUpd + "'";
+        System.out.println("UPD from login: " + loginUpd + " newNickname: " + nicknameUpd);
+
         try {
-            stmt.executeUpdate(str);
+            psUpdNickname = connection.prepareStatement("UPDATE users SET nickname = ? WHERE login = ?");
+            psUpdNickname.setString(2, loginUpd);
+            psUpdNickname.setString(1, nicknameUpd);
+            psUpdNickname.execute();
+//            stmt.executeUpdate(str);
             System.out.println("user nick UPDATE to db");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,10 +91,11 @@ public class DBAuthService {
 
     /*Конец смены ника*/
 
+    /**Авторизация пользователя*/
     public String requestSelectDB(String loginDB, String passDB) {
         try {
             connectDB();
-            System.out.println("DB connect");
+            System.out.println("DB connect for Auth");
             return selectUserToDB(loginDB, passDB);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -102,12 +111,15 @@ public class DBAuthService {
     }
 
     private String selectUserToDB(String loginDB, String passDB) {
-        String str = "SELECT * FROM users WHERE login = '" + loginDB + "' AND password = '" + passDB + "'";
-        System.out.println(str);
+//        String str = "SELECT * FROM users WHERE login = '" + loginDB + "' AND password = '" + passDB + "'";
+//        System.out.println(str);
         try {
 //            stmt.executeUpdate("INSERT INTO users (login, password, nickname) VALUES("+ loginIns + "," + passIns + "," + nicknameIns + ")");
 //            stmt.executeUpdate(str);
-            ResultSet rs = stmt.executeQuery(str);
+            psGetNickname = connection.prepareStatement("SELECT * FROM users WHERE login = ? AND password = ?");
+            psGetNickname.setString(1, loginDB);
+            psGetNickname.setString(2, passDB);
+            ResultSet rs = psGetNickname.executeQuery();
             System.out.println(rs.getString("login") + " "+ rs.getString("password") + " " + rs.getString("nickname"));
             return rs.getString("nickname");
         } catch (SQLException e) {
@@ -116,6 +128,8 @@ public class DBAuthService {
 
         return null;
     }
+    /*Конец авторизации пользователя*/
+
 
     private static void disconnectDB() {
         try {

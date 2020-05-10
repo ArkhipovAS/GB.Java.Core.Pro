@@ -30,6 +30,7 @@ public class ClientHandler {
                     //цикл аутентификации
                     while (true) {
                         String str = in.readUTF();
+                        System.out.println("Новая команда от клиента: " + str);
                         if (str.startsWith("/reg ")) {
                             System.out.println("сообщение с просьбой регистрации прошло");
                             String[] token = str.split(" ");
@@ -42,19 +43,19 @@ public class ClientHandler {
                                 sendMsg("Логин или ник уже занят");
                             }
                         }
-                        if(str.startsWith("/upd ")){
-                            System.out.println("сообщение с просьбой смены ника прошло");
-                            String[] token = str.split(" ");
-                            boolean b = server
-                                    .getAuthService()
-                                    .update(token[1], token[2], token[3]);
-                            if (b) {
-                                sendMsg("Смена ника прошла успешно");
-                            } else {
-                                sendMsg("Ник уже занят");
-                            }
-
-                        }
+//                        if(str.startsWith("/upd ")){
+//                            System.out.println("сообщение с просьбой смены ника прошло");
+//                            String[] token = str.split(" ");
+//                            boolean b = server
+//                                    .getAuthService()
+//                                    .update(token[1], token[2], token[3]);
+//                            if (b) {
+//                                sendMsg("Смена ника прошла успешно");
+//                            } else {
+//                                sendMsg("Ник уже занят");
+//                            }
+//
+//                        }
 
 
                         if (str.equals("/end")) {
@@ -100,6 +101,24 @@ public class ClientHandler {
                                 if (token.length == 3) {
                                     server.privateMsg(this, token[1], token[2]);
                                 }
+                            }
+
+                            if(str.startsWith("/upd ")){
+                                System.out.println("сообщение с просьбой смены ника прошло");
+                                String[] token = str.split(" ");
+                                boolean b = server
+                                        .getAuthService()
+                                        .update(token[1], token[2], token[3]);
+                                if (b) {
+                                    server.unsubscribe(this);//upd user list?
+                                    nick = token[3];
+                                    server.subscribe(this);
+
+                                    sendMsg("Смена ника прошла успешно");
+                                } else {
+                                    sendMsg("Ник уже занят");
+                                }
+
                             }
 
                         } else {

@@ -13,8 +13,8 @@ public class UpdController {
     public TextField loginField;
     @FXML
     public PasswordField passwordField1;
-    @FXML
-    public PasswordField passwordField2;
+//    @FXML
+//    public PasswordField passwordField2;
     @FXML
     public TextField nickField;
 

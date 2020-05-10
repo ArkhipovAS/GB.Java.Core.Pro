@@ -103,6 +103,7 @@ public class Server {
         for (ClientHandler c : clients) {
             c.sendMsg(msg);
         }
+        System.out.println("brodCast CL");
     }
 
 }

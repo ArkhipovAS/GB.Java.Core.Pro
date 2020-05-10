@@ -17,7 +17,6 @@
         <PasswordField fx:id="passwordField" HBox.hgrow="ALWAYS" promptText="password" onAction="#tryToAuth"/>
         <Button text="Зайти" onAction="#tryToAuth" minWidth="50"/>
         <Button text="Регистр" onAction="#tryToReg" minWidth="50"/>
-        <Button text="Переим" onAction="#tryToUpd" minWidth="50"/>
     </HBox>
 
     <HBox fx:id="userPanel" managed="false" visible="false">
