@@ -18,12 +18,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -114,7 +116,20 @@ public class Controller implements Initializable {
                         if (str.startsWith("/authok ")) {
 //                            "/authok nick1"
                             nickname = str.split(" ")[1];
+                            Date date = new Date();
                             setAuthenticated(true);
+
+                            byte [] outData =   ("--------------------------------------------------------\n" +
+                                                "start log" + " Date: " + date.toString() + "\n").getBytes();
+                            String filePath = "client/history" + nickname + ".txt";
+                            System.out.println("Создание лог файла: " + filePath);
+                            File file = new File(filePath);
+                            try (FileOutputStream out = new FileOutputStream( filePath, true )) {
+                                out.write(outData);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
                             break;
                         }
                         textArea.appendText(str + "\n");
@@ -141,6 +156,16 @@ public class Controller implements Initializable {
 
                         } else {
                             textArea.appendText(str + "\n");
+                            String filePath = "client/history" + nickname + ".txt";
+                            String logChat = str + "\n";
+//                            File file = new File(filePath);
+
+                            try {
+                                Files.write(Paths.get(filePath), logChat.getBytes(), StandardOpenOption.APPEND);
+//                                out.write((str + "\n").getBytes());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 } catch (EOFException e) {

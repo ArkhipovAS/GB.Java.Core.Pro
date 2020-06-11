@@ -1,9 +1,10 @@
 package server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class ClientHandler {
 
@@ -22,6 +23,15 @@ public class ClientHandler {
             this.server = server;
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+            byte [] outData =   ("").getBytes();
+            String filePath = "server/history.txt";
+            System.out.println("Создание лог файла сервера: " + filePath);
+            File file = new File(filePath);
+            try (FileOutputStream out = new FileOutputStream( filePath, true )) {
+                out.write(outData);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             new Thread(() -> {
                 try {
@@ -75,6 +85,7 @@ public class ClientHandler {
                                     nick = newNick;
                                     server.subscribe(this);
                                     System.out.println("Клиент " + nick + " прошел аутентификацию");
+                                    sendHistoryChat(nick);
                                     break;
                                 } else {
                                     sendMsg("С этим логином уже авторизовались");
@@ -123,6 +134,8 @@ public class ClientHandler {
 
                         } else {
                             server.broadcastMsg(nick, str);
+
+                            saveHistoryChat(filePath, str);
                         }
                     }
                 } catch (RuntimeException e) {
@@ -142,6 +155,23 @@ public class ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void saveHistoryChat(String filePath, String str) {
+        String logChat = nick + " " + str + "\n";
+        try {
+            Files.write(Paths.get(filePath), logChat.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendHistoryChat(String nick) {
+        getHistoryChat();
+    }
+
+    private void getHistoryChat() {
+
     }
 
 
