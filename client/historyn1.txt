@@ -1,0 +1,22 @@
+start log
+n1: 123
+n1: qwerty
+n1: zxc
+start log
+n1: sdvcsdvcsdv
+start log
+n1: qqqq
+start log
+n1: 4gf4
+start log
+ Date: Thu Jun 11 05:28:10 MSK 2020n1: wecwc
+start log Date: Thu Jun 11 08:58:42 MSK 2020
+n1: test
+start log Date: Thu Jun 11 09:03:06 MSK 2020
+--------------------------------------------------------
+start log Date: Thu Jun 11 09:04:06 MSK 2020
+n1: etetcx
+--------------------------------------------------------
+start log Date: Thu Jun 11 09:10:54 MSK 2020
+n1: eterte
+n1: rtgregf
